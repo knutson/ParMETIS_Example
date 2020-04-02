@@ -1,0 +1,12 @@
+
+module use --append /project/hbj/opt/g/$OS_DIST-$OS_DIST_R/modules
+module load Compilers/GCC/7.4.1
+module load MPI-HBJ/OpenMPI/3.1.4/GCC/7.4.1
+
+setenv METIS_HOME /project/knuts661/opt/parmetis/4.0.3/OpenMPI/3.1.4/GCC/7.4.1 
+
+THE FOLLOWING IS A HACK TO ADD $METIS_HOME/lib to LD_LIBRARY_PATH.
+FIND A WAY TO DO IT AUTOMATICALLY.
+HOW IS IT NORMALLY SET? MODULE?
+
+setenv LD_LIBRARY_PATH $METIS_HOME/lib:/g/a-candl-hbj/hbj/opt/openSUSE-15.0/MPI-HBJ/OpenMPI/3.1.4/GCC/7.4.1/lib
