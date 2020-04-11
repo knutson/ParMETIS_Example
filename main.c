@@ -10,7 +10,7 @@
 
 int main( int argc, char *argv[] ) {
 
-   int irank,nproc;
+   int irank,nproc; // always int?
 
    MPI_Init(&argc, &argv);
 
@@ -77,7 +77,7 @@ int main( int argc, char *argv[] ) {
 
    MPI_Comm comm = MPI_COMM_WORLD;
 
-   int ier;
+   int ier; // always int?
 
    ier = ParMETIS_V3_PartKway( vtxdist, iadj, jadj, iwgt, jwgt,
                                &wgtflag, &numflag, &ncon, &nparts,
@@ -85,18 +85,26 @@ int main( int argc, char *argv[] ) {
                                options, &edgecut, part, &comm );
  
    // gather partition vector, pvec
-   //FIXME: use MPI_INT or MPI_LONG based on idx_t
-   int pvec[15];
-   ier = MPI_Gather( part, 5, MPI_INT,
-                     pvec, 5, MPI_INT,
-                     0, comm ); 
-  
+
+   idx_t pvec[15];
+
+   if (sizeof(idx_t)==4) {
+      ier = MPI_Gather( part, 5, MPI_INT, pvec, 5, MPI_INT, 0, comm );
+   }
+   else if (sizeof(idx_t)==8) {
+      ier = MPI_Gather( part, 5, MPI_LONG, pvec, 5, MPI_LONG, 0, comm );
+   }
+   else {
+      // error
+   } 
+ 
    // print partition vector of the graph
    if(irank==0) {
       printf("\n");
       for(int i=0;i<3;++i) {
          for(int j=0;j<5;++j) {
-            printf("%d ",pvec[5*i+j]);
+            //printf("%d ",(int)pvec[5*i+j]);
+            printf("%ld ",(long)pvec[5*i+j]);
          }
          printf("\n");
       }
