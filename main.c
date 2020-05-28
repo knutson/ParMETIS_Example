@@ -101,10 +101,11 @@ int main( int argc, char *argv[] ) {
    // print partition vector of the graph
    if(irank==0) {
       printf("\n");
+      printf("edgecut = %ld\n", (long) edgecut);
+      printf("\n");
       for(int i=0;i<3;++i) {
          for(int j=0;j<5;++j) {
-            //printf("%d ",(int)pvec[5*i+j]);
-            printf("%ld ",(long)pvec[5*i+j]);
+            printf("%ld ", (long) pvec[5*i+j]);
          }
          printf("\n");
       }
